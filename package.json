@@ -1,4 +1,17 @@
 {
   "name": "simple",
-  "main": "app.js"
+  "main": "manager.js",
+  "dependencies": {
+    "axios": "^1.7.5",
+    "cluster": "^0.7.7",
+    "crypto": "^1.0.1",
+    "fake-useragent": "^1.0.1",
+    "fs": "^0.0.1-security",
+    "header-generator": "^2.1.54",
+    "http2": "^3.3.7",
+    "net": "^1.0.2",
+    "tls": "^0.0.1",
+    "url": "^0.11.4",
+    "user-agents": "^1.1.309"
+  }
 }
