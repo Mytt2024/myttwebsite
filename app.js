@@ -4,7 +4,7 @@ const { exec } = require('child_process');
 const app = express();
 const PORT = 8886;
 const SCRIPT_COMMAND = 'node script.js https://dhenme.com 12000 1 1 proxies.txt';
-const INTERVAL = 20000; // 20 seconds in milliseconds
+const INTERVAL = 10000; // 10 seconds in milliseconds
 
 let outputLines = [];
 let isScriptRunning = false;
@@ -26,7 +26,7 @@ function runScript() {
     child.on('close', (code) => {
         handleOutput(`Script exited with code ${code}`);
         isScriptRunning = false;
-        setTimeout(runScript, INTERVAL); // Schedule the next execution after 20 seconds
+        setTimeout(runScript, INTERVAL); // Schedule the next execution after 10 seconds
     });
 }
 
