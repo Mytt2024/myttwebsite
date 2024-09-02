@@ -13,7 +13,7 @@ function runScript() {
     if (isScriptRunning) return; // Prevent overlapping script executions
 
     isScriptRunning = true;
-    const child = exec(SCRIPT_COMMAND, { silent: true });
+    const child = exec(SCRIPT_COMMAND);
 
     child.stdout.on('data', (data) => {
         handleOutput(data);
