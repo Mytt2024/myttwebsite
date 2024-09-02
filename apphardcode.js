@@ -24,7 +24,7 @@ function runScript() {
     });
 
     child.on('close', (code) => {
-        handleOutput(Script exited with code ${code});
+        handleOutput(`Script exited with code ${code}`);
         isScriptRunning = false;
         setTimeout(runScript, INTERVAL); // Schedule the next execution after 1 minute
     });
@@ -51,6 +51,6 @@ app.get('/status', (req, res) => {
 
 // Start the server and run the script
 app.listen(PORT, () => {
-    console.log(Server is running on port ${PORT});
+    console.log(`Server is running on port ${PORT}`);
     runScript(); // Start the first execution
 });
