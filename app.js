@@ -1,21 +1,20 @@
 const express = require('express');
 const { exec } = require('child_process');
-const fs = require('fs');
 
 const app = express();
 const PORT = 8886;
+const SCRIPT_COMMAND = 'node script.js https://dhenme.com 12000 1 1 proxies.txt';
+const INTERVAL = 60000; // 1 minute in milliseconds
 
-// To store the last 20 lines of output
 let outputLines = [];
+let isScriptRunning = false;
 
-// Function to execute the script
 function runScript() {
-    const command = 'node script.js https://dhenme.com 12000 1 1 proxies.txt';
+    if (isScriptRunning) return; // Prevent overlapping script executions
 
-    // Run the script without producing output in the terminal
-    const child = exec(command, { silent: true });
+    isScriptRunning = true;
+    const child = exec(SCRIPT_COMMAND, { silent: true });
 
-    // Capture the script output
     child.stdout.on('data', (data) => {
         handleOutput(data);
     });
@@ -26,10 +25,11 @@ function runScript() {
 
     child.on('close', (code) => {
         handleOutput(`Script exited with code ${code}`);
+        isScriptRunning = false;
+        setTimeout(runScript, INTERVAL); // Schedule the next execution after 1 minute
     });
 }
 
-// Function to handle script output and store only the last 20 lines
 function handleOutput(data) {
     const lines = data.split('\n').filter(line => line.trim().length > 0);
 
@@ -44,7 +44,7 @@ function handleOutput(data) {
 // Define the /status endpoint
 app.get('/status', (req, res) => {
     res.json({
-        status: 'running',
+        status: isScriptRunning ? 'running' : 'idle',
         last_20_updates: outputLines
     });
 });
@@ -52,5 +52,5 @@ app.get('/status', (req, res) => {
 // Start the server and run the script
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-    runScript();
+    runScript(); // Start the first execution
 });
