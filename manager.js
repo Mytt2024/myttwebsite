@@ -8,7 +8,7 @@ const proxyFile = "proxies.txt";
 
 // Function to run the app.js script
 function runScript() {
-    const command = `node DarkBotnet.js ${url} ${port} ${param1} ${param2} ${proxyFile}`;
+    const command = `node script.js ${url} ${port} ${param1} ${param2} ${proxyFile}`;
     console.log(`Starting script: ${command}`);
 
     const process = exec(command);
