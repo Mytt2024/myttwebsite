@@ -26,7 +26,7 @@ function runScript() {
     child.on('close', (code) => {
         handleOutput(`Script exited with code ${code}`);
         isScriptRunning = false;
-        setTimeout(runScript, INTERVAL); // Schedule the next execution after 1 minute
+       // setTimeout(runScript, INTERVAL); // Schedule the next execution after 1 minute
     });
 }
 
