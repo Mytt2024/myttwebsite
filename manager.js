@@ -9,7 +9,7 @@ let scriptOutput = [];
 
 // Function to run the app.js script
 function runScript() {
-    const url = "https://raajje.mv";
+    const url = "https://dhenme.com";
     const port = "12000";
     const param1 = "1";
     const param2 = "1";
