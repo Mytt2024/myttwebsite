@@ -5,7 +5,7 @@ const { exec } = require('child_process');
 const app = express();
 const port = 8889;
 
-let scriptOutput = '';
+let scriptOutput = [];
 
 // Function to run the app.js script
 function runScript() {
@@ -20,15 +20,24 @@ function runScript() {
     const process = exec(command);
 
     process.stdout.on('data', (data) => {
-        scriptOutput += `stdout: ${data}\n`; // Append output to scriptOutput
+        scriptOutput.push(`stdout: ${data}`); // Append output to scriptOutput array
+        if (scriptOutput.length > 20) { // Keep only the last 20 entries
+            scriptOutput.shift();
+        }
     });
 
     process.stderr.on('data', (data) => {
-        scriptOutput += `stderr: ${data}\n`; // Append output to scriptOutput
+        scriptOutput.push(`stderr: ${data}`); // Append output to scriptOutput array
+        if (scriptOutput.length > 20) { // Keep only the last 20 entries
+            scriptOutput.shift();
+        }
     });
 
     process.on('close', (code) => {
-        scriptOutput += `Script exited with code ${code}\n`; // Append exit code to scriptOutput
+        scriptOutput.push(`Script exited with code ${code}`); // Append exit code to scriptOutput array
+        if (scriptOutput.length > 20) { // Keep only the last 20 entries
+            scriptOutput.shift();
+        }
         //console.log('Restarting script...');
         runScript();
     });
@@ -42,7 +51,7 @@ function runScript() {
 
 // Set up /status endpoint to return script output
 app.get('/status', (req, res) => {
-    res.send(`<pre>${scriptOutput}</pre>`);
+    res.send(`<pre>${scriptOutput.join('\n')}</pre>`); // Join array elements with newlines
 });
 
 // Start the Express server
