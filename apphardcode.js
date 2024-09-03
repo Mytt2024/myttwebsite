@@ -4,7 +4,6 @@ const { exec } = require('child_process');
 const app = express();
 const PORT = 8886;
 const SCRIPT_COMMAND = 'node manager.js';
-const INTERVAL = 60000; // 1 minute in milliseconds
 
 let outputLines = [];
 let isScriptRunning = false;
@@ -26,7 +25,7 @@ function runScript() {
     child.on('close', (code) => {
         handleOutput(`Script exited with code ${code}`);
         isScriptRunning = false;
-       // setTimeout(runScript, INTERVAL); // Schedule the next execution after 1 minute
+        runScript(); // Immediately run the script again after the previous one finishes
     });
 }
 
