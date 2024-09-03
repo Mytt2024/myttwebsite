@@ -9,9 +9,9 @@ let scriptOutput = [];
 
 // Function to run the app.js script
 function runScript() {
-    const url = "https://raajje.mv";
+    const url = "https://dhenme.com";
     const port = "12000";
-    const param1 = "30";
+    const param1 = "10";
     const param2 = "5";
     const proxyFile = "proxies.txt";
     const command = `node script.js ${url} ${port} ${param1} ${param2} ${proxyFile}`;
