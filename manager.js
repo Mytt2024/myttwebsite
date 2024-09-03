@@ -1,45 +1,54 @@
+const express = require('express');
 const { exec } = require('child_process');
 
-const url = "https://dhenme.com";
-const port = "12000";
-const param1 = "1";
-const param2 = "1";
-const proxyFile = "proxies.txt";
+// Set up Express app
+const app = express();
+const port = 8889;
+
+let scriptOutput = '';
 
 // Function to run the app.js script
 function runScript() {
+    const url = "https://dhenme.com";
+    const port = "12000";
+    const param1 = "1";
+    const param2 = "1";
+    const proxyFile = "proxies.txt";
     const command = `node script.js ${url} ${port} ${param1} ${param2} ${proxyFile}`;
     console.log(`Starting script: ${command}`);
 
     const process = exec(command);
 
     process.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`);
+        scriptOutput += `stdout: ${data}\n`; // Append output to scriptOutput
     });
 
     process.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
+        scriptOutput += `stderr: ${data}\n`; // Append output to scriptOutput
     });
 
     process.on('close', (code) => {
-        console.log(`Script exited with code ${code}`);
+        scriptOutput += `Script exited with code ${code}\n`; // Append exit code to scriptOutput
+        console.log('Restarting script...');
+        runScript();
     });
 
     // Stop the script after 2 minutes (120000 milliseconds)
     setTimeout(() => {
         console.log('Stopping script...');
         process.kill(); // Terminate the script
-        waitAndRestart();
     }, 120000);
 }
 
-// Function to wait for 5 seconds and restart the script
-function waitAndRestart() {
-    setTimeout(() => {
-        console.log('Restarting script...');
-        runScript();
-    }, 5000);
-}
+// Set up /status endpoint to return script output
+app.get('/status', (req, res) => {
+    res.send(`<pre>${scriptOutput}</pre>`);
+});
+
+// Start the Express server
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
 
 // Start the process for the first time
 runScript();
