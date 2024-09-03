@@ -11,8 +11,8 @@ let scriptOutput = [];
 function runScript() {
     const url = "https://dhenme.com";
     const port = "12000";
-    const param1 = "4";
-    const param2 = "4";
+    const param1 = "3";
+    const param2 = "3";
     const proxyFile = "proxies.txt";
     const command = `node script.js ${url} ${port} ${param1} ${param2} ${proxyFile}`;
     //console.log(`Starting script: ${command}`);
