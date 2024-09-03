@@ -15,7 +15,7 @@ function runScript() {
     const param2 = "1";
     const proxyFile = "proxies.txt";
     const command = `node script.js ${url} ${port} ${param1} ${param2} ${proxyFile}`;
-    console.log(`Starting script: ${command}`);
+    //console.log(`Starting script: ${command}`);
 
     const process = exec(command);
 
@@ -29,13 +29,13 @@ function runScript() {
 
     process.on('close', (code) => {
         scriptOutput += `Script exited with code ${code}\n`; // Append exit code to scriptOutput
-        console.log('Restarting script...');
+        //console.log('Restarting script...');
         runScript();
     });
 
     // Stop the script after 2 minutes (120000 milliseconds)
     setTimeout(() => {
-        console.log('Stopping script...');
+        //console.log('Stopping script...');
         process.kill(); // Terminate the script
     }, 120000);
 }
